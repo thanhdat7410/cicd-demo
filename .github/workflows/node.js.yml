@@ -1,0 +1,32 @@
+# Tên của workflow
+name: Demo CI Testing
+
+# Kích hoạt workflow này khi có ai đó 'push' code
+on:
+  push:
+    branches: [ "main" ] # Chỉ chạy khi push lên nhánh main
+
+# Các công việc cần thực hiện
+jobs:
+  build-and-test:
+    # Chạy trên một máy ảo Ubuntu (máy chủ của GitHub)
+    runs-on: ubuntu-latest
+
+    steps:
+      # Bước 1: Lấy code từ repo về máy ảo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Bước 2: Cài đặt phiên bản Node.js
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      # Bước 3: Cài đặt các thư viện (giống như 'npm install' ở local)
+      - name: Install dependencies
+        run: npm install
+
+      # Bước 4: Chạy test (giống như 'npm test' ở local)
+      - name: Run tests
+        run: npm test
